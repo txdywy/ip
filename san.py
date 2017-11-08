@@ -1,9 +1,11 @@
 from sanic import Sanic
 from sanic.response import json
 import aiohttp
+from sanic.config import LOGGING
 
 app = Sanic()
 
+LOGGING['loggers']['network']['handlers'] = ['accessSysLog', 'errorSysLog']
 
 async def ip(iip):
     async with aiohttp.ClientSession() as session:
@@ -25,6 +27,6 @@ async def test(request):
     return json({"hello": "world"})
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=80)
+    app.run(host="0.0.0.0", port=80, log_config=LOGGING)
 
 
